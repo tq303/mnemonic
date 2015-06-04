@@ -1,0 +1,10 @@
+{
+  "name": "angularGame",
+  "version": "0.0.1",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.4.0",
+    "bootstrap-sass": "~3.3.4",
+    "bourbon": "~4.2.3"
+  }
+}

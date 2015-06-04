@@ -1,0 +1,65 @@
+@import "../lib/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "../lib/bourbon/app/assets/stylesheets/_bourbon.scss";
+
+$size: 80px;
+
+#game-container {
+	width: ($size * 3) + 0px;
+	margin: 0 auto;
+
+	.game {
+		@include clearfix;
+		ul {
+			list-style: none;
+			width: 100%;
+			padding: 0;
+			margin: 0;
+
+			li {
+				position: relative;
+				width: $size;
+				height: $size;
+				float: left;
+				border: 1px solid #e3e3e3;
+
+				& > div {
+					background: none;
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					top: 0;
+					left: 0;
+					@include transition(background 0.3s ease-in-out);
+					&.flash {
+						@include transition(background 0.3s ease-in-out);
+						background: #912388;
+					}
+					&.trigger {
+						@include transition(background 0.3s ease-in-out);
+						background: #3AAAC9;
+					}
+				}
+
+			}
+		}
+	}
+	.controls {
+		width: 100%;
+		padding: 12px 0;
+		button {
+			border-radius: none;			
+			text-transform: uppercase;
+		}
+		.attempt-panel {
+			@include clearfix;
+			.attempt-progress {
+				.attempt-progress-bar {
+					@include transition(background 0.3s ease-in-out);
+					width: 0%;
+					height: 24px;
+					background: #4DB0A0;
+				}
+			}
+		}
+	}
+}
