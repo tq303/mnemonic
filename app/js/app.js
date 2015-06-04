@@ -36,21 +36,21 @@
  	}
 
  	function gameService ($timeout, $interval) {
-		// variables
-		var blocks 		   = [{ active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }],
-			isPlaying       = false,
-			hasPlayed       = false,
-			attempting      = false,
-			hasAttempted	   = false,
-			timer      	   = 600,
-			currentTest     = [],
-			attemptPosition = 0,
-			attemptProgress = 0,
-			currentPerf	   = [],
-			attemptTimer   = 0;
 
-		// functions
 		return {
+			// variables
+			blocks 		    : [{ active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }],
+			isPlaying       : false,
+			hasPlayed       : false,
+			attempting      : false,
+			hasAttempted	: false,
+			timer      	    : 600,
+			currentTest     : [],
+			attemptPosition : 0,
+			attemptProgress : 0,
+			currentPerf	    : [],
+			attemptTimer    : 0,
+			// functions
 			Start: 		  Start,
 			Attempt: 	  Attempt,
 			IsStandBy: 	  IsStandBy,

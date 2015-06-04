@@ -21,10 +21,16 @@
 		]
 	)
 
-	.controller("PerformanceCtl", ['$scope', '$state', 'gameService', PerformanceCtl]);
+	.controller("PerformanceCtl", ['$scope', '$state', 'gameService', PerformanceCtl])
+
+	.run(function (gameService) {
+		window.console.log(gameService);
+	})
 
 	function PerformanceCtl ($scope, $state, gameService) {
+		var vm = this;
 
+		vm.gameService = gameService;
 	}
 
 }());
