@@ -1,25 +1,14 @@
-/**
- * Created by oliver.white on 03/06/15.
- */
-var gulp = require('gulp'),
-    sass = require('gulp-ruby-sass');
+// gulp global
+var gulp = require('gulp');
 
-gulp.task('default', function () {
-    return sass('sass/')
-        .on('error', function (err) {
-            console.error('Error!', err.message);
-        })
-        .pipe(gulp.dest('css'));
-});
+// plugins
+var sass = require('gulp-sass');
 
-gulp.task('compile-styles', function () {
-    return sass('sass/')
-        .on('error', function (err) {
-            console.error('Error!', err.message);
-        })
-        .pipe(gulp.dest('css'));
-});
+gulp.task('default', ['scss']);
 
-gulp.task('watch', function () {
-    gulp.watch('sass/**/*.scss', ['compile-styles']);
+// Compile SCSS
+gulp.task('scss', function () {
+    gulp.src('./app/scss/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('./app/css'));
 });

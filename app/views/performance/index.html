@@ -1,0 +1,44 @@
+<div id="game-container">
+
+	<h2>Mnumeric</h2>
+
+	<div class="game">
+		<ul>
+			<!-- loop blocks -->
+			<li ng-repeat="gameBlock in blocks track by $index">
+				<!-- show block on/off -->
+				<div ng-class="{ flash: gameBlock.active, trigger: gameBlock.pressed }" ng-click="Attempt($index)"></div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="controls">
+		<!-- play button -->
+		<button ng-if="IsStandBy()" class="btn btn-primary" ng-click="Start()">
+			play
+		</button>
+		<!-- waiting banner -->
+		<h2 ng-if="IsPlaying()">Pay Attention...</h2>
+		<!-- you indicator -->
+		<h2 ng-if="IsYourTurn()">Your turn.</h2>
+		<!-- attempt panel -->
+		<div ng-if="IsPerforming()" class="attempt-panel">
+			<div class="col-md-6">
+				<h2>{{ currentTest.length - attemptPosition }}</h2>
+			</div>
+			<div class="col-md-6 attempt-progress">
+				<div class="attempt-progress-bar" ng-style="{ 'width': attemptProgress + '%' }"></div>
+			</div>
+		</div>
+		<div ng-if="IsComplete()">
+			<h2>Well done</h2>
+			<ul class="list-group">
+				<li class="list-group-item">Total Accuracy : <strong>{{ GetAccuracy() }}%</strong></li>
+				<li class="list-group-item">Total In time  : <strong>{{ GetTiming()   }}%</strong></li>
+				<li class="list-group-item">Total  		   : <strong>{{ GetScore()    }}%</strong></li>
+			</ul>
+			<button ng-click="ResetState()" class="btn btn-default">Reset</button>
+		</div>
+	</div>
+
+</div>

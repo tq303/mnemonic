@@ -1,0 +1,4 @@
+node_modules
+app/lib
+app/css
+.DS_Store

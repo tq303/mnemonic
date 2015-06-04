@@ -5,8 +5,13 @@
   "main": "server.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "start": "gulp default; http-server -a localhost -p 8000 -c-1"
+  },
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-ruby-sass": "^1.0.5"
+    "gulp-ruby-sass": "^1.0.5",
+    "gulp-sass": "^2.0.1",
+    "http-server": "^0.8.0"
   }
 }
