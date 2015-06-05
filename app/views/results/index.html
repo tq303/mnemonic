@@ -1,5 +1,9 @@
 <div id="results-container">
 	
+	<div>
+		<select class="form-control" ng-model="results.sortType" ng-option="o.id as o.label for o in results.sortOptions"></select>
+	</div>
+
 	<table class="table">
 		<thead>
 			<th>Name</th>
@@ -8,15 +12,15 @@
 			<th>Total</th>
 		</thead>
 		
-		<tr ng-if="!results.participants.length">
+		<tr ng-if="!results.orderParticipants().length">
 			<td>No Data.</td>
 		</tr>
 
-		<tr ng-repeat="participant in results.participants track by $index">
+		<tr ng-repeat="participant in results.orderParticipants() track by $index">
 			<td>{{ participant.name }}</td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>{{ results.calcAccuracy(participant) }}</td>
+			<td>{{ results.calcTiming(participant) }}</td>
+			<td>{{ results.calcScore(participant) }}</td>
 		</tr>
 
 	</table>
