@@ -6,6 +6,10 @@ $size: 80px;
 #game-container {
 	width: ($size * 3) + 0px;
 	margin: 0 auto;
+	
+	.reset-area {
+		padding: 12px 0;
+	}
 
 	.game {
 		@include clearfix;
@@ -31,7 +35,6 @@ $size: 80px;
 					left: 0;
 					@include transition(background 0.3s ease-in-out);
 					&.flash {
-						@include transition(background 0.3s ease-in-out);
 						background: #912388;
 					}
 					&.trigger {
@@ -46,10 +49,12 @@ $size: 80px;
 	.controls {
 		width: 100%;
 		padding: 12px 0;
+
 		button {
 			border-radius: none;			
 			text-transform: uppercase;
 		}
+
 		.attempt-panel {
 			@include clearfix;
 			.attempt-progress {
@@ -61,5 +66,12 @@ $size: 80px;
 				}
 			}
 		}
+
+		form {
+			button {
+				margin: 9px 0;
+			}
+		}
+
 	}
 }

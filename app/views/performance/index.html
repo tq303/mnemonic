@@ -1,44 +1,64 @@
 <div id="game-container">
 
 	<h2>Mnumeric</h2>
+	
+	<div class="reset-area">
+		<button ng-click="performance.resetState()" class="btn btn-default">Reset</button>
+	</div>
 
 	<div class="game">
 		<ul>
 			<!-- loop blocks -->
-			<li ng-repeat="gameBlock in blocks track by $index">
+			<li ng-repeat="gameBlock in performance.blocks track by $index">
 				<!-- show block on/off -->
-				<div ng-class="{ flash: gameBlock.active, trigger: gameBlock.pressed }" ng-click="Attempt($index)"></div>
+				<div ng-class="{ flash: gameBlock.active, trigger: gameBlock.pressed }" ng-click="performance.attempt($index)"></div>
 			</li>
 		</ul>
 	</div>
 
 	<div class="controls">
 		<!-- play button -->
-		<button ng-if="IsStandBy()" class="btn btn-primary" ng-click="Start()">
+		<button ng-if="performance.isStandBy()" class="btn btn-primary" ng-click="performance.startGame()">
 			play
 		</button>
 		<!-- waiting banner -->
-		<h2 ng-if="IsPlaying()">Pay Attention...</h2>
+		<h2 ng-if="performance.isPlaying()">Pay Attention...</h2>
 		<!-- you indicator -->
-		<h2 ng-if="IsYourTurn()">Your turn.</h2>
+		<h2 ng-if="performance.isYourTurn()">Your turn.</h2>
 		<!-- attempt panel -->
-		<div ng-if="IsPerforming()" class="attempt-panel">
+		<div ng-if="performance.isPerforming()" class="attempt-panel">
 			<div class="col-md-6">
-				<h2>{{ currentTest.length - attemptPosition }}</h2>
+				<h2>{{ performance.remainingAttempts() }}</h2>
 			</div>
-			<div class="col-md-6 attempt-progress">
-				<div class="attempt-progress-bar" ng-style="{ 'width': attemptProgress + '%' }"></div>
-			</div>
+			<!-- <div class="col-md-6 attempt-progress">
+				<div class="attempt-progress-bar" ng-style="{ 'width': performance.attemptProgressPercentage() + '%' }"></div>
+			</div> -->
 		</div>
-		<div ng-if="IsComplete()">
+		<div ng-if="performance.isComplete()">
+
+			<!-- results form -->
 			<h2>Well done</h2>
 			<ul class="list-group">
-				<li class="list-group-item">Total Accuracy : <strong>{{ GetAccuracy() }}%</strong></li>
-				<li class="list-group-item">Total In time  : <strong>{{ GetTiming()   }}%</strong></li>
-				<li class="list-group-item">Total  		   : <strong>{{ GetScore()    }}%</strong></li>
+				<li class="list-group-item">Total Accuracy : <strong>{{ performance.getAccuracy() }}%</strong></li>
+				<li class="list-group-item">Total In time  : <strong>{{ performance.getTiming()   }}%</strong></li>
+				<li class="list-group-item">Total  		   : <strong>{{ performance.getScore()    }}%</strong></li>
 			</ul>
-			<button ng-click="ResetState()" class="btn btn-default">Reset</button>
+	
+			<!-- save performance form -->
+			<form name="performanceSaveForm" ng-submit="performance.savePerformance(performanceSaveForm.$valid)" novalidate>
+
+				<h3>Save your attempt.</h3>
+				<p>Minimum of 3 characters.</p>
+				<input class="form-control" type="text" ng-model="performance.username" ng-minlength="3" ng-required="true" />
+				<button type="submit" class="btn btn-success" ng-disabled="performanceSaveForm.$invalid" >Save</button>	
+				
+				<p ng-if="performance.showError" class="">Please provide a username with a minimum of 3 characters</p>
+
+			</form>
+
 		</div>
+
+		
 	</div>
 
 </div>

@@ -4,7 +4,8 @@
 	angular.module("App", [
 		'ui.router',
 		'App.Performance',
-		'App.Results'
+		'App.Results',
+		'lbServices'
 	])
 
 	.config(
@@ -16,7 +17,7 @@
 				$stateProvider
 
 					.state('index', {
-						controller: 'IndexCtl',
+						controller: 'IndexCtl as index',
 						url: '/',
 						templateUrl: './views/index/index.html',
 						data: {
@@ -27,53 +28,77 @@
 		]
 	)
 
-	.controller('IndexCtl', [ '$scope', '$state', IndexCtl ] )
+	.controller('IndexCtl', [ '$state', IndexCtl ] )
 
-	.factory('gameService', [ '$timeout', '$interval', gameService ])
+	.factory('GameService', [ '$timeout', '$interval', GameService ])
  	
- 	function IndexCtl ($scope, $state) {
- 		
- 	}
+ 	function IndexCtl ($state) {}
 
- 	function gameService ($timeout, $interval) {
+ 	function GameService ($timeout, $interval) {
+		var blocks 		       = [],
+			isCurrentlyPlaying =  false,
+			hasPlayed          =  false,
+			attempting         =  false,
+			hasAttempted	   =  false,
+			timer      	       =  600,
+			currentTest        =  [],
+			attemptPosition    =  0,
+			attemptProgress    =  0,
+			currentPerf	       =  [],
+			attemptTimer       =  0;
+
+		resetBlocks();
 
 		return {
 			// variables
-			blocks 		    : [{ active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }],
-			isPlaying       : false,
-			hasPlayed       : false,
-			attempting      : false,
-			hasAttempted	: false,
-			timer      	    : 600,
-			currentTest     : [],
-			attemptPosition : 0,
-			attemptProgress : 0,
-			currentPerf	    : [],
-			attemptTimer    : 0,
+			blocks 		       : blocks,
+			isCurrentlyPlaying : isCurrentlyPlaying,
+			hasPlayed          : hasPlayed,
+			attempting         : attempting,
+			hasAttempted	   : hasAttempted,
+			timer      	       : timer,
+			currentTest        : currentTest,
+			attemptPosition    : attemptPosition,
+			attemptProgress    : attemptProgress,
+			currentPerf	       : currentPerf,
+			attemptTimer       : attemptTimer,
 			// functions
-			Start: 		  Start,
-			Attempt: 	  Attempt,
-			IsStandBy: 	  IsStandBy,
-			IsPlaying: 	  IsPlaying,
-			IsYourTurn:   IsYourTurn,
-			IsPerforming: IsPerforming,
-			IsComplete:   IsComplete,
-			GetAccuracy:  GetAccuracy,
-			GetTiming: 	  GetTiming,
-			GetScore: 	  GetScore,
-			ResetState:   ResetState,
+			startGame		  : startGame,
+			attempt		 	  : attempt,
+			isStandBy		  : isStandBy,
+			isPlaying		  : isPlaying,
+			isYourTurn		  : isYourTurn,
+			isPerforming	  : isPerforming,
+			isComplete		  : isComplete,
+			getAccuracy		  : getAccuracy,
+			getTiming		  : getTiming,
+			getScore		  : getScore,
+			resetState		  : resetState,
+			remainingAttempts : remainingAttempts,
+		}
+
+		function resetBlocks() {
+			blocks 	    	= [{ active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }, { active: false }],
+			currentTest 	= [],
+			currentPerf 	= [],
+			attemptPosition =  0,
+			attemptProgress =  0,
+			attemptTimer    =  0;
 		}
 
 		// function definitions
-		function Start() {
+		function startGame() {
 			var i = 0,
 				totalCount = blocks.length,
-				GetNext = function () {
+				getNext = function () {
 					$timeout(function () {
 						// randomly set block
 						var rand = (Math.floor(Math.random() * 8));
 						blocks[rand].active = true;
-						currentTest.push(rand);
+						currentTest.push({
+							'block':  rand,
+							'timing': timer
+						});
 
 						// remove set block
 						$timeout(function () {
@@ -82,14 +107,14 @@
 
 						i++;
 
-						CheckGetNext();
+						checkGetNext();
 					}, timer);
 				},
-				CheckGetNext = function () {
-					if (i < totalCount)
-						GetNext();
+				checkGetNext = function () {
+					if (i < totalCount && isCurrentlyPlaying)
+						getNext();
 					else {
-						isPlaying = false;
+						isCurrentlyPlaying = false;
 						hasPlayed = true;
 					}
 				};
@@ -97,11 +122,11 @@
 			for (var j in blocks)
 				blocks[j].active = false;
 
-			isPlaying = true;
-			GetNext();
+			isCurrentlyPlaying = true;
+			getNext();
 		}
 
-		function Attempt(bIndex) {
+		function attempt(bIndex) {
 
 			if (!hasPlayed || hasAttempted)
 				return;
@@ -112,7 +137,7 @@
 
 			// use previous timing
 			currentPerf.push({
-				'index':  bIndex,
+				'block':  bIndex,
 				'timing': attemptProgress
 			});
 
@@ -123,13 +148,13 @@
 			// update progress-bar
 			attemptTimer = $interval(function () {
 				attemptProgress++;
-				// clear interval if reaches 100%
-				if (attemptProgress >= 100) {
-					attemptProgress = 100;
+				// clear interval if reaches global timer
+				if (attemptProgress >= timer) {
+					attemptProgress = timer;
 					$interval.cancel(attemptTimer);	
 				}
 
-			}, (100 / timer));
+			}, 1);
 
 			if (attemptPosition < (currentTest.length - 1))
 				attemptPosition++;
@@ -140,19 +165,19 @@
 		}
 
 		// score output
-		function GetAccuracy() {
+		function getAccuracy() {
 			var isMatch = 0,
 				i;
 
 			angular.forEach(currentPerf, function (value, key, object) {
-				if (value.index === currentTest[key])
+				if (value.block === currentTest[key].block)
 					isMatch++;
 			});
 
 			return Math.floor((100 / currentTest.length) * isMatch);
 		}
 
-		function GetTiming() {
+		function getTiming() {
 			var isInTime = 0,
 				i;
 
@@ -164,33 +189,38 @@
 			return Math.floor((100 / currentTest.length) * isInTime);
 		}
 
-		function GetScore() {
-			return ((GetAccuracy() + GetTiming()) / 2);
+		function getScore() {
+			return ((getAccuracy() + getTiming()) / 2);
+		}
+
+		function remainingAttempts() {
+			return currentTest.length - attemptPosition;
 		}
 
 		// control states
-		function IsStandBy() {
-			return !isPlaying && !attempting && !hasPlayed && !hasAttempted;
+		function isStandBy() {
+			return !isCurrentlyPlaying && !attempting && !hasPlayed && !hasAttempted;
 		}
 
-		function IsPlaying() {
-			return isPlaying && !attempting && !hasPlayed && !hasAttempted;
+		function isPlaying() {
+			return isCurrentlyPlaying && !attempting && !hasPlayed && !hasAttempted;
 		}
 
-		function IsYourTurn() {
-			return !isPlaying && !attempting && hasPlayed && !hasAttempted;
+		function isYourTurn() {
+			return !isCurrentlyPlaying && !attempting && hasPlayed && !hasAttempted;
 		}
 
-		function IsPerforming() {
-			return !isPlaying && attempting && hasPlayed && !hasAttempted;
+		function isPerforming() {
+			return !isCurrentlyPlaying && attempting && hasPlayed && !hasAttempted;
 		}
 
-		function IsComplete() {
-			return !isPlaying && !attempting && hasPlayed && hasAttempted;
+		function isComplete() {
+			return !isCurrentlyPlaying && !attempting && hasPlayed && hasAttempted;
 		}
 
-		function ResetState() {
-			isPlaying    = false;
+		function resetState() {
+			resetBlocks();
+			isCurrentlyPlaying = false;
 			attempting   = false;
 			hasPlayed    = false;
 			hasAttempted = false;

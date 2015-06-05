@@ -1,1 +1,24 @@
-<h2>This is the results page</h2>
+<div id="results-container">
+	
+	<table class="table">
+		<thead>
+			<th>Name</th>
+			<th>Accuracy</th>
+			<th>Timing</th>
+			<th>Total</th>
+		</thead>
+		
+		<tr ng-if="!results.participants.length">
+			<td>No Data.</td>
+		</tr>
+
+		<tr ng-repeat="participant in results.participants track by $index">
+			<td>{{ participant.name }}</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+
+	</table>
+
+</div>

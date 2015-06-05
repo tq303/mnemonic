@@ -1,0 +1,38 @@
+{
+  "name": "Attempt",
+  "plural": "Attempts",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mongodb": {
+    "collection": "attempts"
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "test": {
+      "type": [
+        "object"
+      ],
+      "required": true
+    },
+    "attempt": {
+      "type": [
+        "object"
+      ],
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": []
+}
