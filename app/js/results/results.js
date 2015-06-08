@@ -28,17 +28,15 @@
 
 		vm.participants = [];
 
-		vm.calcAccuracy = GameService.calcAccuracy;
-		vm.calcTiming   = GameService.calcTiming;
-		vm.calcScore    = GameService.calcScore;
+		vm.game = GameService;
 
 		Attempt.find(
 			function (records) {
 				// update records with calculated values
 				vm.participants = records.map(function (record) {
-					record.accuracy = vm.calcAccuracy( record );
-					record.timing   = vm.calcTiming( record );
-					record.score    = vm.calcScore( record );
+					record.accuracy = vm.game.calcAccuracy( record );
+					record.timing   = vm.game.calcTiming( record );
+					record.score    = vm.game.calcScore( record );
 					return record;
 				});
 				setupTableParams();
@@ -62,8 +60,6 @@
 					var orderedData = params.sorting() ?
 							$filter('orderBy')(vm.participants, params.orderBy()) :
 							vm.participants;
-
-					window.console.log(vm.participants.length);
 
 					$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 				}

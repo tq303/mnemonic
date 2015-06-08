@@ -48,9 +48,10 @@
 			calcScore		  : calcScore,
 			resetState		  : resetState,
 			remainingAttempts : remainingAttempts,
+			replayResults	  : replayResults,
 		}
 
-		function resetBlocks() {
+		function resetBlocks () {
 			currentTest 	= [],
 			currentPerf 	= [],
 			attemptPosition =  0,
@@ -59,7 +60,7 @@
 		}
 
 		// function definitions
-		function startGame() {
+		function startGame () {
 			var i = 0,
 				totalCount = blocks.length,
 				getNext = function () {
@@ -98,7 +99,7 @@
 			getNext();
 		}
 
-		function attempt(bIndex) {
+		function attempt ( bIndex ) {
 
 			if (!hasPlayed || hasAttempted)
 				return;
@@ -136,6 +137,10 @@
 			}
 		}
 
+		function replayResults ( test, attempt ) {
+			
+		}
+
 		// score output
 
 		// score local accuracy
@@ -143,7 +148,7 @@
 			var isMatch = 0,
 				i;
 
-			angular.forEach(currentPerf, function (value, key, object) {
+			angular.forEach(currentPerf, function ( value, key, object ) {
 				if (value.block === currentTest[key].block)
 					isMatch++;
 			});
@@ -152,11 +157,11 @@
 		}
 
 		// score accuracy with inputs
-		function calcAccuracy(result) {
+		function calcAccuracy( result ) {
 			var isMatch = 0,
 				i;
 
-			angular.forEach(result.attempt, function (value, key, object) {
+			angular.forEach(result.attempt, function ( value, key, object ) {
 				if (value.block === result.test[key].block)
 					isMatch++;
 			});
@@ -165,11 +170,11 @@
 		}
 
 		// score local timing
-		function getTiming() {
+		function getTiming () {
 			var isInTime = 0,
 				i;
 
-			angular.forEach(currentPerf, function (value, key, object) {
+			angular.forEach(currentPerf, function ( value, key, object ) {
 				if (value.timing < timer)
 					isInTime++;
 			});
@@ -178,11 +183,11 @@
 		}
 
 		// score timing with inputs
-		function calcTiming(result) {
+		function calcTiming( result ) {
 			var isInTime = 0,
 				i;
 
-			angular.forEach(result.test, function (value, key, object) {
+			angular.forEach(result.test, function ( value, key, object ) {
 				if (value.timing < timer)
 					isInTime++;
 			});
@@ -191,41 +196,41 @@
 		}
 
 		// total score
-		function getScore() {
+		function getScore () {
 			return ((getAccuracy() + getTiming()) / 2);
 		}
 
 		// total score with inputs
-		function calcScore(result) {
+		function calcScore ( result ) {
 			return ((calcAccuracy(result) + calcTiming(result)) / 2);
 		}
 
-		function remainingAttempts() {
+		function remainingAttempts () {
 			return currentTest.length - attemptPosition;
 		}
 
 		// control states
-		function isStandBy() {
+		function isStandBy () {
 			return !isCurrentlyPlaying && !attempting && !hasPlayed && !hasAttempted;
 		}
 
-		function isPlaying() {
+		function isPlaying () {
 			return isCurrentlyPlaying && !attempting && !hasPlayed && !hasAttempted;
 		}
 
-		function isYourTurn() {
+		function isYourTurn () {
 			return !isCurrentlyPlaying && !attempting && hasPlayed && !hasAttempted;
 		}
 
-		function isPerforming() {
+		function isPerforming () {
 			return !isCurrentlyPlaying && attempting && hasPlayed && !hasAttempted;
 		}
 
-		function isComplete() {
+		function isComplete () {
 			return !isCurrentlyPlaying && !attempting && hasPlayed && hasAttempted;
 		}
 
-		function resetState() {
+		function resetState () {
 			resetBlocks();
 			isCurrentlyPlaying = false;
 			attempting   = false;

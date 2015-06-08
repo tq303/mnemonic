@@ -1,16 +1,45 @@
 <div id="results-container">
-
-	<table ng-table="results.tableParams" class="table">
+	
+	<div class="col-md-6">
+		<legend>Results</legend>
+		<table ng-table="results.tableParams" class="table">
 		
-		<tbody>
-			<tr ng-repeat="participant in $data">
-				<td data-title="'Name'" 	sortable="'name'">    {{ participant.name }}    </td>
-				<td data-title="'Accuracy'" sortable="'accuracy'">{{ participant.accuracy }}</td>
-				<td data-title="'Timing'"   sortable="'timing'">  {{ participant.timing }}  </td>
-				<td data-title="'Score'"    sortable="'score'">	  {{ participant.score }}   </td>
-			</tr>
-		</tbody>
+			<tbody>
+				<tr ng-repeat="participant in $data">
+					<td data-title="'Name'" 	sortable="'name'">    {{ participant.name }}    </td>
+					<td data-title="'Accuracy'" sortable="'accuracy'">{{ participant.accuracy }}</td>
+					<td data-title="'Timing'"   sortable="'timing'">  {{ participant.timing }}  </td>
+					<td data-title="'Score'"    sortable="'score'">	  {{ participant.score }}   </td>
+					<td data-title="'Preview'">
+						<button class="btn btn-primary" ng-click=" results.game.replayResults( participant.test, participant.attempt ) ">
+							<span class="glyphicon glyphicon-play-circle"></span>
+						</button>
+					</td>
+				</tr>
+			</tbody>
 
-	</table>
+		</table>	
+	</div>
 
+	<div class="col-md-6 preview-output">
+		<legend>Output</legend>
+		
+		<h2>Preview</h2>
+
+		<div class="game-container">
+			
+			<div class="game">
+				<ul>
+					<!-- loop blocks -->
+					<li ng-repeat="gameBlock in results.game.blocks track by $index">
+						<!-- show block on/off -->
+						<div ng-class="{ flash: gameBlock.active }"></div>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+
+	</div>
+	
 </div>

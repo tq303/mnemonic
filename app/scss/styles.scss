@@ -3,7 +3,7 @@
 
 $size: 80px;
 
-#game-container {
+#game-container, .game-container {
 	width: ($size * 3) + 0px;
 	margin: 0 auto;
 	
@@ -81,14 +81,14 @@ $size: 80px;
 		thead {
 			tr {
 				th {
-					div {
-						span {
-							width: 100%;
-							text-align: left;
-						}
-					}
+					text-align: left;
 				}
 			}
+		}
+	}
+	.preview-output {
+		h2 {
+			text-align: center;
 		}
 	}
 }
