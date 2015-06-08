@@ -5,7 +5,8 @@
 		'ui.router',
 		'App.Performance',
 		'App.Results',
-		'lbServices'
+		'lbServices',
+		'ngTable'
 	])
 
 	.config(

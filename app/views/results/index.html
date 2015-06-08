@@ -1,27 +1,15 @@
 <div id="results-container">
-	
-	<div>
-		<select class="form-control" ng-model="results.sortType" ng-option="o.id as o.label for o in results.sortOptions"></select>
-	</div>
 
-	<table class="table">
-		<thead>
-			<th>Name</th>
-			<th>Accuracy</th>
-			<th>Timing</th>
-			<th>Total</th>
-		</thead>
+	<table ng-table="results.tableParams" class="table">
 		
-		<tr ng-if="!results.orderParticipants().length">
-			<td>No Data.</td>
-		</tr>
-
-		<tr ng-repeat="participant in results.orderParticipants() track by $index">
-			<td>{{ participant.name }}</td>
-			<td>{{ results.calcAccuracy(participant) }}</td>
-			<td>{{ results.calcTiming(participant) }}</td>
-			<td>{{ results.calcScore(participant) }}</td>
-		</tr>
+		<tbody>
+			<tr ng-repeat="participant in $data">
+				<td data-title="'Name'" 	sortable="'name'">    {{ participant.name }}    </td>
+				<td data-title="'Accuracy'" sortable="'accuracy'">{{ participant.accuracy }}</td>
+				<td data-title="'Timing'"   sortable="'timing'">  {{ participant.timing }}  </td>
+				<td data-title="'Score'"    sortable="'score'">	  {{ participant.score }}   </td>
+			</tr>
+		</tbody>
 
 	</table>
 

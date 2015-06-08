@@ -2,7 +2,8 @@
 var gulp = require('gulp');
 
 // plugins
-var sass = require('gulp-sass');
+var sass = require('gulp-sass'),
+	jslint = require('gulp-jslint');
 
 gulp.task('default', ['scss']);
 
@@ -13,6 +14,17 @@ gulp.task('scss', function () {
         .pipe(gulp.dest('./app/css'));
 });
 
+gulp.task('jslint', function () {
+	gulp.src('./app/js/**/*.js')
+		.pipe(jslint({
+
+		}))
+		.on('error', function (error) {
+            console.error(String(error));
+        });
+});
+
 gulp.task('watch', function() {
     gulp.watch(['./app/scss/**/*.scss'], ['scss']);
+    // gulp.watch(['./app/js/**/*.js'], ['jslint']);
 });
